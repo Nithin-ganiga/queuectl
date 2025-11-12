@@ -25,7 +25,8 @@ function claimJob(workerId) {
 }
 
 function markCompleted(id) {
-  db.prepare(`UPDATE jobs SET state='completed', updated_at=?, worker_id=NULL, locked_at=NULL`).run(now(), id);
+  // Include WHERE id=? so the bound id parameter is used correctly.
+  db.prepare(`UPDATE jobs SET state='completed', updated_at=?, worker_id=NULL, locked_at=NULL WHERE id=?`).run(now(), id);
 }
 
 function failJob(job, err) {
